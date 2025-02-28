@@ -1,265 +1,202 @@
-<?xml version='1.0'?>
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
 
-<robot name="atom" xmlns:xacro="http://www.ros.org/wiki/xacro">
-	<xacro:property name="robot_name" value="atom" />
-	<xacro:property name="robot_chassis_mass" value="15"/>
-	<xacro:property name="robot_chassis_length" value="0.2"/>
-	<xacro:property name="robot_chassis_radius" value="0.25"/>
-	<xacro:property name="robot_caster_wheel_radius" value="0.05"/>
-	<xacro:property name="robot_caster_wheel_radius_collision" value="0.0499"/>
+    <material name="white">
+        <color rgba="1 1 1 1" />
+    </material>
 
-	<xacro:property name="robot_wheel_mass" value="5"/>
-	<xacro:property name="robot_wheel_length" value="0.05"/>
-	<xacro:property name="robot_wheel_radius" value="0.1"/>
+    <material name="orange">
+        <color rgba="1 0.3 0.1 1"/>
+    </material>
 
+    <material name="blue">
+        <color rgba="0.2 0.2 1 1"/>
+    </material>
 
-	<!-- Make Chassis of Bot -->
-	<link name="chassis">
-		<pose>0 0 0.1 0 0 0</pose>
+    <material name="black">
+        <color rgba="0 0 0 1"/>
+    </material>
 
-		<inertial>
-			<mass value="${robot_chassis_mass}"/>
-      		<origin xyz="0.0 0 0" rpy=" 0 0 0"/>
+    <material name="red">
+        <color rgba="1 0 0 1"/>
+    </material>
+    
+    <material name="green">
+        <color rgba="0 1 0 1" />
+    </material>
 
-      		<inertia 
-      			ixx="0.147116667" ixy="0" ixz="0"
-      			iyy="0.334951167" iyz="0"
-      			izz="0.3978345"
-      		/>
-		</inertial>
+    <material name="gray">
+        <color rgba="0.5 0.5 0.5 1" />
+    </material>
 
-		<collision name="collision">
-			<origin xyz="0 0 0.05" rpy=" 0 0 0"/>
-			<geometry>
-				<box size="0.5 0.5 0.2"/>
-			</geometry>
-		</collision>
-
-		<visual name="chassis_visual">
-			<origin xyz="0 0 0.05" rpy=" 0 0 0"/>
-			<geometry>
-				<box size="0.5 0.5 0.2"/>
-			</geometry>
-
-		</visual>
-
-	</link>
+    <material name="pink">
+        <color rgba="1 0.4 0.7 1" />
+    </material>
 
 
-	<!-- Right Wheel Back -->
-	<link name="right_wheel_back">
-		<inertial>
-			<mass value="${robot_wheel_mass}"/>
-			<origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
-			<inertia
-				ixx="0.1" ixy="0.0" ixz="0.0"
-				iyy="0.1" iyz="0.0"
-				izz="0.1"
-			/>
-		</inertial>
+    <!-- BASE LINK -->
 
-		<visual>
-			<origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
-			<geometry>
-				<cylinder radius="${robot_wheel_radius}" length="${robot_wheel_length}"/>
-			</geometry>
-		</visual>
+    <link name="base_link">
+    </link>
 
-		<collision>
-			<origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
-			<geometry>
-				<cylinder radius="${robot_wheel_radius}" length="${robot_wheel_length}"/>
-			</geometry>
-		</collision>
+    <!-- BASE_FOOTPRINT LINK -->
+    <joint name="base_footprint_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="base_footprint"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
 
-	</link>
+    <link name="base_footprint">
+    </link>
 
-	<!-- Right Wheel Front-->
-	<link name="right_wheel_front">
-		<inertial>
-			<mass value="${robot_wheel_mass}"/>
-			<origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
-			<inertia
-				ixx="0.1" ixy="0.0" ixz="0.0"
-				iyy="0.1" iyz="0.0"
-				izz="0.1"
-			/>
-		</inertial>
+    <joint name="chassis_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="chassis"/>
+        <origin xyz="0 0 0"/>
+    </joint>
 
-		<visual>
-			<origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
-			<geometry>
-				<cylinder radius="${robot_wheel_radius}" length="${robot_wheel_length}"/>
-			</geometry>
-		</visual>
+    <!-- Chassis Link -->
+    <link name="chassis">
+        <visual>
+            <origin xyz="0 0 0.13" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.451 0.451 0.18"/>
+                <!-- Hole geometry -->
+                <cylinder length="0.15" radius="0.075"/>
+            </geometry>
+            <material name="white"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0.13" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.451 0.451 0.18"/>
+                <!-- Hole geometry -->
+                <cylinder length="0.15" radius="0.075"/>
+            </geometry>
+        </collision>
+        <xacro:inertial_box mass="0.5" x="0.451" y="0.451" z="0.18">
+            <origin xyz="0 0 0.13" rpy="0 0 0"/>
+        </xacro:inertial_box>
+    </link>
+    <gazebo reference="chassis">
+        <material>Gazebo/White</material>
+    </gazebo>
 
-		<collision>
-			<origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
-			<geometry>
-				<cylinder radius="${robot_wheel_radius}" length="${robot_wheel_length}"/>
-			</geometry>
-		</collision>
+    <!-- Wheel Link -->
+    <link name="front_left_wheel">
+        <visual>
+            <geometry>
+                <cylinder length="0.03" radius="0.07" />
+            </geometry>
+            <material name="blue"/>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder length="0.03" radius="0.07" />
+            </geometry>
+        </collision>
+        <xacro:inertial_cylinder mass="0.1" length="0.03" radius="0.07">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_cylinder>
+    </link>
+    <gazebo reference="front_left_wheel">
+        <material>Gazebo/Blue</material>
+    </gazebo>
 
-	</link>
+    <link name="front_right_wheel">
+        <visual>
+            <geometry>
+                <cylinder length="0.03" radius="0.07" />
+            </geometry>
+            <material name="red"/>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder length="0.03" radius="0.07" />
+            </geometry>
+        </collision>
+        <xacro:inertial_cylinder mass="0.1" length="0.03" radius="0.07">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_cylinder>
+    </link>
+    <gazebo reference="front_right_wheel">
+        <material>Gazebo/Red</material>
+    </gazebo>
 
+    <link name="back_left_wheel">
+        <visual>
+            <geometry>
+                <cylinder length="0.03" radius="0.07" />
+            </geometry>
+            <material name="orange"/>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder length="0.03" radius="0.07" />
+            </geometry>
+        </collision>
+        <xacro:inertial_cylinder mass="0.1" length="0.03" radius="0.07">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_cylinder>
+    </link>
+    <gazebo reference="back_left_wheel">
+        <material>Gazebo/Orange</material>
+    </gazebo>
 
+    <link name="back_right_wheel">
+        <visual>
+            <geometry>
+                <cylinder length="0.03" radius="0.07" />
+            </geometry>
+            <material name="green"/>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder length="0.03" radius="0.07" />
+            </geometry>
+        </collision>
+        <xacro:inertial_cylinder mass="0.1" length="0.03" radius="0.07">
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+        </xacro:inertial_cylinder>
+    </link>
+    <gazebo reference="back_right_wheel">
+        <material>Gazebo/Green</material>
+    </gazebo>
 
-	<!-- Left wheel Back-->
-	<link name="left_wheel_back">
-		<inertial>
-			<mass value="${robot_wheel_mass}"/>
-			<origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
-			<inertia
-				ixx="0.1" ixy="0.0" ixz="0.0"
-				iyy="0.1" iyz="0.0"
-				izz="0.1"
-			/>
-		</inertial>
+    <!-- Wheel Joint -->
+    <!-- FRONT LEFT WHEEL -->
+    <joint name="front_left_wheel_joint" type="continuous">
+        <parent link="base_link"/>
+        <child link="front_left_wheel"/>
+        <origin xyz="0.165 0.205 0" rpy="-${pi/2} 0 0"/>
+        <axis xyz="0 0 1"/>
+    </joint>
 
-		<visual>
-			<origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
-			<geometry>
-				<cylinder radius="${robot_wheel_radius}" length="${robot_wheel_length}"/>
-			</geometry>
-		</visual>
-
-		<collision>
-			<origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
-			<geometry>
-				<cylinder radius="${robot_wheel_radius}" length="${robot_wheel_length}"/>
-			</geometry>
-		</collision>
-
-	</link>
-
-	<!-- Left wheel Front-->
-	<link name="left_wheel_front">
-		<inertial>
-			<mass value="${robot_wheel_mass}"/>
-			<origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
-			<inertia
-				ixx="0.1" ixy="0.0" ixz="0.0"
-				iyy="0.1" iyz="0.0"
-				izz="0.1"
-			/>
-		</inertial>
-
-		<visual>
-			<origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
-			<geometry>
-				<cylinder radius="${robot_wheel_radius}" length="${robot_wheel_length}"/>
-			</geometry>
-		</visual>
-
-		<collision>
-			<origin xyz="0 0 0" rpy="0 1.5707 1.5707"/>
-			<geometry>
-				<cylinder radius="${robot_wheel_radius}" length="${robot_wheel_length}"/>
-			</geometry>
-		</collision>
-
-	</link>
-
-
-	<!-- Project center to the ground -->
-	<link name="robot_footprint"></link>
-
-
-
-	<!-- Define Joints -->
-
-	<!-- Right Wheel Joint Back-->
-	<joint type="continuous" name="right_wheel_hinge_back">
-	    <origin xyz="-0.2 -0.30 0" rpy="0 0 0" />
-	    <parent link="chassis"/>
-	    <child link="right_wheel_back" />
-	    <axis xyz="0 1 0" rpy="0 0 0" />
-	    <limit effort="10000" velocity="1000" />
-	    <dynamics damping="1.0" friction="1.0" />
-	</joint>
-
-	<!-- Right Wheel Joint Front-->
-	<joint type="continuous" name="right_wheel_hinge_front">
-	    <origin xyz="0.2 -0.30 0" rpy="0 0 0" />
-	    <parent link="chassis"/>
-	    <child link="right_wheel_front" />
-	    <axis xyz="0 1 0" rpy="0 0 0" />
-	    <limit effort="10000" velocity="1000" />
-	    <dynamics damping="1.0" friction="1.0" />
-	</joint>
-
-
-	<!-- Left Wheel Joint Back-->
-	<joint type="continuous" name="left_wheel_hinge_back">
-	    <origin xyz="-0.2 0.30 0" rpy="0 0 0" />
-	    <parent link="chassis"/>
-	    <child link="left_wheel_back" />
-	    <axis xyz="0 1 0" rpy="0 0 0" />
-	    <limit effort="10000" velocity="1000" />
-	    <dynamics damping="1.0" friction="1.0" />
-	</joint>
-
-	<!-- Left Wheel Joint Front-->
-	<joint type="continuous" name="left_wheel_hinge_front">
-	    <origin xyz="0.2 0.30 0" rpy="0 0 0" />
-	    <parent link="chassis"/>
-	    <child link="left_wheel_front" />
-	    <axis xyz="0 1 0" rpy="0 0 0" />
-	    <limit effort="10000" velocity="1000" />
-	    <dynamics damping="1.0" friction="1.0" />
-	</joint>
-
-	<joint name="robot_footprint_joint" type="fixed">
-		<origin xyz="0 0 0" rpy="0 0 0" />
-		<parent link="robot_footprint"/>
-		<child link="chassis" />
-	</joint>
+    <!-- FRONT RIGHT WHEEL -->
+    <joint name="front_right_wheel_joint" type="continuous">
+        <parent link="base_link"/>
+        <child link="front_right_wheel"/>
+        <origin xyz="0.165 -0.205 0" rpy="${pi/2} 0 0"/>
+        <axis xyz="0 0 -1"/>
+    </joint>
 
 
-	<!-- Color of bot -->
-	<gazebo reference="left_wheel_front">
-		<material>Gazebo/Green</material>
-		<kp>1000000.0</kp> <!-- kp and kd for rubber -->
-		<kd>100.0</kd>
-		<mu1>1.0</mu1>
-		<mu2>1.0</mu2>
-		<maxVel>1.0</maxVel>
-		<minDepth>0.00</minDepth>
-	</gazebo>
-
-	<gazebo reference="left_wheel_back">
-		<material>Gazebo/Green</material>
-		<kp>1000000.0</kp> <!-- kp and kd for rubber -->
-		<kd>100.0</kd>
-		<mu1>1.0</mu1>
-		<mu2>1.0</mu2>
-		<maxVel>1.0</maxVel>
-		<minDepth>0.00</minDepth>
-	</gazebo>
-
-	<gazebo reference="right_wheel_front">
-		<material>Gazebo/Green</material>
-		<kp>1000000.0</kp> <!-- kp and kd for rubber -->
-		<kd>100.0</kd>
-		<mu1>1.0</mu1>
-		<mu2>1.0</mu2>
-		<maxVel>1.0</maxVel>
-		<minDepth>0.00</minDepth>
-	</gazebo>
-	<gazebo reference="right_wheel_back">
-		<material>Gazebo/Green</material>
-		<kp>1000000.0</kp> <!-- kp and kd for rubber -->
-		<kd>100.0</kd>
-		<mu1>1.0</mu1>
-		<mu2>1.0</mu2>
-		<maxVel>1.0</maxVel>
-		<minDepth>0.00</minDepth>
-	</gazebo>
+    <!-- BACK LEFT WHEEL -->
+    <joint name="back_left_wheel_joint" type="continuous">
+        <parent link="base_link"/>
+        <child link="back_left_wheel"/>
+        <origin xyz="-0.165 0.205 0" rpy="-${pi/2} 0 0"/>
+        <axis xyz="0 0 1"/>
+    </joint>
 
 
+    <!-- BACK RIGHT WHEEL -->
+    <joint name="back_right_wheel_joint" type="continuous">
+        <parent link="base_link"/>
+        <child link="back_right_wheel"/>
+        <origin xyz="-0.165 -0.205 0" rpy="${pi/2} 0 0"/>
+        <axis xyz="0 0 -1"/>
+    </joint>
 
-	<gazebo reference="chassis">
-		<material>Gazebo/Blue</material>
-	</gazebo>
 
 </robot>
