@@ -7,8 +7,8 @@
           <left_joint>left_wheel_hinge_front</left_joint>
           <right_joint>right_wheel_hinge_front</right_joint>
 
-          <!-- <wheelSeparation>0.4</wheelSeparation> -->
-          <!-- <wheelDiameter>0.2</wheelDiameter> -->
+          <wheel_separation>0.4</wheel_separation>
+          <wheel_diameter>0.2</wheel_diameter>
           
           <max_wheel_torque>200</max_wheel_torque>
           <max_wheel_acceleration>10.0</max_wheel_acceleration>
@@ -28,8 +28,8 @@
           <left_joint>left_wheel_hinge_back</left_joint>
           <right_joint>right_wheel_hinge_back</right_joint>
 
-          <!-- <wheelSeparation>0.4</wheelSeparation> -->
-          <!-- <wheelDiameter>0.2</wheelDiameter> -->
+          <wheel_separation>0.4</wheel_separation>
+          <wheel_diameter>0.2</wheel_diameter>
           
           <max_wheel_torque>200</max_wheel_torque>
           <max_wheel_acceleration>10.0</max_wheel_acceleration>

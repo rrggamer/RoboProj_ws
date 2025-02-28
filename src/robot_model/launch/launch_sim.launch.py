@@ -26,12 +26,16 @@ def generate_launch_description():
     gazebo = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
                     get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')]),
+                    launch_arguments={'world': os.path.join(get_package_share_directory(package_name), 'world', 'map_b_static.world')}.items()
              )
 
     # Run the spawner node from the gazebo_ros package. The entity name doesn't really matter if you only have a single robot.
     spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
                         arguments=['-topic', 'robot_description',
-                                   '-entity', 'atom'],
+                                   '-entity', 'my_bot',
+                                   '-x', '0', '-y', '0', '-z', '0.8',  
+                                   '-R', '0', '-P', '0', '-Y', '1.57', 
+                                   ],
                         output='screen')
 
     
