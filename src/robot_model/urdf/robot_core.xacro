@@ -64,7 +64,7 @@
                 <!-- Hole geometry -->
                 <cylinder length="0.15" radius="0.075"/>
             </geometry>
-            <material name="white"/>
+            <material name="pink"/>
         </visual>
         <collision>
             <origin xyz="0 0 0.13" rpy="0 0 0"/>
@@ -79,43 +79,43 @@
         </xacro:inertial_box>
     </link>
     <gazebo reference="chassis">
-        <material>Gazebo/White</material>
+        <material>Gazebo/Pink</material>
     </gazebo>
 
     <!-- Wheel Link -->
     <link name="front_left_wheel">
         <visual>
             <geometry>
-                <cylinder length="0.03" radius="0.07" />
+                <cylinder length="0.04" radius="0.08" />
             </geometry>
             <material name="blue"/>
         </visual>
         <collision>
             <geometry>
-                <cylinder length="0.03" radius="0.07" />
+                <cylinder length="0.04" radius="0.08" />
             </geometry>
         </collision>
-        <xacro:inertial_cylinder mass="0.1" length="0.03" radius="0.07">
+        <xacro:inertial_cylinder mass="0.1" length="0.04" radius="0.08">
             <origin xyz="0 0 0" rpy="0 0 0"/>
         </xacro:inertial_cylinder>
     </link>
     <gazebo reference="front_left_wheel">
-        <material>Gazebo/Blue</material>
+        <material>Gazebo/Red</material>
     </gazebo>
 
     <link name="front_right_wheel">
         <visual>
             <geometry>
-                <cylinder length="0.03" radius="0.07" />
+                <cylinder length="0.04" radius="0.08" />
             </geometry>
             <material name="red"/>
         </visual>
         <collision>
             <geometry>
-                <cylinder length="0.03" radius="0.07" />
+                <cylinder length="0.04" radius="0.08" />
             </geometry>
         </collision>
-        <xacro:inertial_cylinder mass="0.1" length="0.03" radius="0.07">
+        <xacro:inertial_cylinder mass="0.1" length="0.04" radius="0.08">
             <origin xyz="0 0 0" rpy="0 0 0"/>
         </xacro:inertial_cylinder>
     </link>
@@ -126,41 +126,41 @@
     <link name="back_left_wheel">
         <visual>
             <geometry>
-                <cylinder length="0.03" radius="0.07" />
+                <cylinder length="0.04" radius="0.08" />
             </geometry>
             <material name="orange"/>
         </visual>
         <collision>
             <geometry>
-                <cylinder length="0.03" radius="0.07" />
+                <cylinder length="0.04" radius="0.08" />
             </geometry>
         </collision>
-        <xacro:inertial_cylinder mass="0.1" length="0.03" radius="0.07">
+        <xacro:inertial_cylinder mass="0.1" length="0.04" radius="0.08">
             <origin xyz="0 0 0" rpy="0 0 0"/>
         </xacro:inertial_cylinder>
     </link>
     <gazebo reference="back_left_wheel">
-        <material>Gazebo/Orange</material>
+        <material>Gazebo/Red</material>
     </gazebo>
 
     <link name="back_right_wheel">
         <visual>
             <geometry>
-                <cylinder length="0.03" radius="0.07" />
+                <cylinder length="0.04" radius="0.08" />
             </geometry>
             <material name="green"/>
         </visual>
         <collision>
             <geometry>
-                <cylinder length="0.03" radius="0.07" />
+                <cylinder length="0.04" radius="0.08" />
             </geometry>
         </collision>
-        <xacro:inertial_cylinder mass="0.1" length="0.03" radius="0.07">
+        <xacro:inertial_cylinder mass="0.1" length="0.04" radius="0.08">
             <origin xyz="0 0 0" rpy="0 0 0"/>
         </xacro:inertial_cylinder>
     </link>
     <gazebo reference="back_right_wheel">
-        <material>Gazebo/Green</material>
+        <material>Gazebo/Red</material>
     </gazebo>
 
     <!-- Wheel Joint -->

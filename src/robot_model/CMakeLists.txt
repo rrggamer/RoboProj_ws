@@ -25,9 +25,15 @@ if(BUILD_TESTING)
 endif()
 
 install(
-  DIRECTORY launch urdf world config
+  DIRECTORY launch urdf world config scripts
   DESTINATION share/${PROJECT_NAME}/
 )
+
+install(PROGRAMS
+  scripts/teleop_twist_keyboard.py
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 
 
 ament_package()
