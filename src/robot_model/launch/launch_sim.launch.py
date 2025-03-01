@@ -16,6 +16,12 @@ def generate_launch_description():
 
     package_name='robot_model' 
 
+    slam_params = os.path.join(
+        get_package_share_directory(package_name), 
+        'config', 
+        'mapper_params_online_async.yaml'  # Ensure this file exists in the specified path
+    )
+
     rsp = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
                     get_package_share_directory(package_name),'launch','rsp.launch.py'
@@ -37,7 +43,30 @@ def generate_launch_description():
                                    '-R', '0', '-P', '0', '-Y', '1.57', 
                                    ],
                         output='screen')
+    
+    slam = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource([os.path.join(
+                    get_package_share_directory('slam_toolbox'),'launch','online_async_launch.py'
+                )]), 
+                launch_arguments={'use_sim_time': 'true', 'params_file': slam_params}.items()
+    )
 
+
+    twist_mux = Node(
+        package='twist_mux',
+        executable='twist_mux',
+        output='screen',
+        parameters=[
+            os.path.join(
+                get_package_share_directory(package_name), 
+                'config', 
+                'twist_mux.yaml'  # Ensure this file exists in the specified path
+            )
+        ],
+        remappings=[
+            ('cmd_vel_out', 'diff_cont/cmd_vel_unstamped')  # Remap output topic
+        ]
+    )
     
 
     # Launch them all!
@@ -45,4 +74,6 @@ def generate_launch_description():
         rsp,
         gazebo,
         spawn_entity,
+        # slam,
+        twist_mux,
     ])
