@@ -3,7 +3,7 @@
     <xacro:macro name="robot_controller">
         <gazebo>
             <plugin name="gazebo_ros2_control_robot" filename="libgazebo_ros2_control.so">
-                <parameters>$(find articubot_one)/config/velocity_controllers.yaml</parameters>
+                <parameters>$(find robot_model)/config/velocity_controllers.yaml</parameters>
             </plugin>
         </gazebo>
         <gazebo>
