@@ -67,6 +67,15 @@ def generate_launch_description():
             ('cmd_vel_out', 'diff_cont/cmd_vel_unstamped')  # Remap output topic
         ]
     )
+
+    controller_manager = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=[
+            "joint_state_broadcaster",
+            "gripper_controller",
+        ],
+    )
     
 
     # Launch them all!
@@ -76,4 +85,5 @@ def generate_launch_description():
         spawn_entity,
         # slam,
         twist_mux,
+        controller_manager,
     ])

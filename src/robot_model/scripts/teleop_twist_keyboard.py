@@ -5,22 +5,14 @@ import tty
 import termios
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import String
+from rclpy.action import ActionClient
+from control_msgs.action import FollowJointTrajectory
+from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
+from std_msgs.msg import String, Float64MultiArray
 from geometry_msgs.msg import Twist
 from rclpy import qos
 
 class keyboard_control(Node):
-    
-    moveSpeed: float = 0.0
-    slideSpeed: float = 0.0
-    turnSpeed: float = 0.0
-
-    plusMoveSpeed: float = 0.25
-    plusSlideSpeed: float = 0.25
-    plusturnSpeed: float = 0.5
-    plusSpeedSize: float = 0.01
-    maxSpeed : float = 3.0 
-    
     def __init__(self):
         super().__init__('keyboard_control_node')
         self.keyboard_pub = self.create_publisher(
@@ -28,11 +20,31 @@ class keyboard_control(Node):
         )
         
         self.cmd_vel_pub = self.create_publisher(
-            Twist, '/cmd_vel', qos_profile=qos.qos_profile_system_default
+            Twist, 'cmd_vel', qos_profile=qos.qos_profile_system_default
         )
-        self.show_log()
         
-        self.get_logger().info("Keyboard publisher started. Press 'p' to quit.")
+        self.gripper_pub = self.create_publisher(
+            Float64MultiArray, 'gripper_controller/commands', qos_profile=qos.qos_profile_system_default
+        )
+
+        
+        self.moveSpeed: float = 0.0
+        self.slideSpeed: float = 0.0
+        self.turnSpeed: float = 0.0
+        self.plusMoveSpeed: float = 0.25
+        self.plusSlideSpeed: float = 0.25
+        self.plusturnSpeed: float = 0.5
+        self.plusSpeedSize: float = 0.01
+        self.maxSpeed : float = 3.0 # m/s
+        
+        self.gripperSlideVel: float = 0.0
+        self.gripperUpDownVel: float = 0.0
+        self.maxGripperSlideVel: float = 0.5
+        self.maxGripperUpDownVel: float = 0.5
+        self.gripperIncrement: float = 0.1
+        
+        self.show_log()
+        self.get_logger().info("Keyboard publisher started. Press keys to send messages. Press 'p' to quit.")
 
 
     def clip(self, value : float, min_val : float, max_val : float) -> float:
@@ -54,9 +66,15 @@ class keyboard_control(Node):
             "'i' : Increase turn speed increment. \n"
             "'k' : Decrease turn speed increment. \n"
             "' ' : Brake. \n"
+            "'8' : Slide Gripper Up. \n"
+            "'2' : Slide Gripper Down. \n"
+            "'4' : Close Gripper. \n"
+            "'6' : Open Gripper Up. \n"
+            "'5' : Set to defalt position. \n"
             "Keyboard publisher started. Press keys to send messages. Press 'p' to quit.\n"
             f"Current Speeds: Move={self.moveSpeed:.2f}, Slide={self.slideSpeed:.2f}, Turn={self.turnSpeed:.2f}\n"
             f"Current Speed increment: Move={self.plusMoveSpeed:.2f}, Slide={self.plusSlideSpeed:.2f}, Turn={self.plusturnSpeed:.2f}"
+            f"\nCurrent Gripper Velocity: Slide={self.gripperSlideVel:.2f}, Up/Down={self.gripperUpDownVel:.2f}"
         )
 
         # Log the combined message
@@ -76,6 +94,22 @@ class keyboard_control(Node):
             self.moveSpeed = 0.0
             self.slideSpeed = 0.0
             self.turnSpeed = 0.0
+
+        if key == '4' or key == '6' or key == '8' or key == '2' or key == '5':
+            self.gripperSlideVel = self.gripperSlideVel + self.gripperIncrement if key == '4' else self.gripperSlideVel - self.gripperIncrement if key == '6' else self.gripperSlideVel
+            self.gripperUpDownVel = self.gripperUpDownVel + self.gripperIncrement if key == '8' else self.gripperUpDownVel - self.gripperIncrement if key == '2' else self.gripperUpDownVel
+
+            self.gripperSlideVel = self.clip(self.gripperSlideVel, -self.maxGripperSlideVel, self.maxGripperSlideVel)
+            self.gripperUpDownVel = self.clip(self.gripperUpDownVel, -self.maxGripperUpDownVel, self.maxGripperUpDownVel)
+            
+            if key == '5':  # Reset Gripper to default position
+                self.gripperSlideVel = 0.0
+                self.gripperUpDownVel = 0.0
+                
+            gripper_vel_msg = Float64MultiArray()
+            gripper_vel_msg.data = [float(self.gripperUpDownVel), float(self.gripperSlideVel), float(-self.gripperSlideVel)]
+            self.gripper_pub.publish(gripper_vel_msg)
+                
 
         # Clip values
         self.moveSpeed = self.clip(self.moveSpeed, -self.maxSpeed, self.maxSpeed)
@@ -110,9 +144,10 @@ class keyboard_control(Node):
         keyboard_msg.data = key
         
         cmd_vel_msg = Twist()
-        cmd_vel_msg.linear.x = self.moveSpeed
-        cmd_vel_msg.linear.y = self.slideSpeed
-        cmd_vel_msg.angular.z = self.turnSpeed
+        cmd_vel_msg.linear.x    = float(self.moveSpeed)
+        cmd_vel_msg.linear.y    = float(self.slideSpeed)
+        cmd_vel_msg.angular.z   = float(self.turnSpeed)
+        
         
         self.keyboard_pub.publish(keyboard_msg)
         self.cmd_vel_pub.publish(cmd_vel_msg)

@@ -29,7 +29,7 @@
             <geometry>
                 <box size="0.02 0.1 0.02"/>
             </geometry>
-            <material name="orange"/>
+            <material name="red"/>
         </visual>
         <collision>
             <geometry>
@@ -50,7 +50,7 @@
             <geometry>
                 <box size="0.02 0.1 0.02"/>
             </geometry>
-            <material name="orange"/>
+            <material name="red"/>
         </visual>
         <collision>
             <geometry>
@@ -95,17 +95,17 @@
 
     <!-- Gazebo Simulation for Gripper -->
     <gazebo reference="gripper_base">
-        <material>Gazebo/Gray</material>
+        <material>Gazebo/Pink</material>
         <gravity>true</gravity>
     </gazebo>
 
     <gazebo reference="gripper_finger_left">
-        <material>Gazebo/Orange</material>
+        <material>Gazebo/Red</material>
         <gravity>true</gravity>
     </gazebo>
 
     <gazebo reference="gripper_finger_right">
-        <material>Gazebo/Orange</material>
+        <material>Gazebo/Red</material>
         <gravity>true</gravity>
     </gazebo>
 

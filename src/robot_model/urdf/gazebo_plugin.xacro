@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
+    <xacro:macro name="robot_controller">
+        <gazebo>
+            <plugin name="gazebo_ros2_control_robot" filename="libgazebo_ros2_control.so">
+                <parameters>$(find articubot_one)/config/velocity_controllers.yaml</parameters>
+            </plugin>
+        </gazebo>
+        <gazebo>
+            <plugin name="contact_plugin" filename="libgazebo_ros_contact.so">
+                <update_rate>1000</update_rate>
+                <contact_topic>/gripper_contacts</contact_topic>
+            </plugin>
+        </gazebo>
+    </xacro:macro>
+</robot>

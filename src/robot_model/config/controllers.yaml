@@ -1,0 +1,30 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 10
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    gripper_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+gripper_controller:
+  ros__parameters:
+    joints:
+      - gripper_vertical_joint
+      - gripper_finger_left_joint
+      - gripper_finger_right_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    state_publish_rate: 50.0  # Ensure it's a float
+    action_monitor_rate: 20.0  # Ensure it's a float
+    allow_partial_joints_goal: true
+    constraints:
+      goal_time: 2.0
+    gains:
+      gripper_vertical_joint: { p: 50.0, i: 0.01, d: 20.0 }
+      gripper_finger_left_joint: { p: 100.0, i: 0.01, d: 10.0 }
+      gripper_finger_right_joint: { p: 100.0, i: 0.01, d: 10.0 }
