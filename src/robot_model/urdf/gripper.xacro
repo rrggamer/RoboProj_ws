@@ -146,7 +146,7 @@
 
     <!-- Gazebo Simulation for Gripper -->
     <gazebo reference="gripper_base">
-        <material>Gazebo/Gray</material>
+        <material>Gazebo/WoodPallet </material>
         <gravity>true</gravity>
         <ode>
             <solver_iterations>500</solver_iterations>  <!-- Increase solver iterations -->
@@ -155,7 +155,7 @@
     </gazebo>
 
     <gazebo reference="gripper_finger_left">
-        <material>Gazebo/Orange</material>
+        <material>Gazebo/Trunk  </material>
         <gravity>true</gravity>
         <ode>
             <solver_iterations>500</solver_iterations>  <!-- Increase solver iterations -->
@@ -168,7 +168,7 @@
     </gazebo>
 
     <gazebo reference="gripper_finger_right">
-        <material>Gazebo/Orange</material>
+        <material>Gazebo/Trunk  </material>
         <gravity>true</gravity>
         <ode>
             <solver_iterations>500</solver_iterations>  <!-- Increase solver iterations -->

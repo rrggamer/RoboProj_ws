@@ -79,7 +79,7 @@
         </xacro:inertial_box>
     </link>
     <gazebo reference="chassis">
-        <material>Gazebo/Pink</material>
+        <material>Gazebo/Wood   </material>
     </gazebo>
 
     <!-- Wheel Link -->
@@ -100,7 +100,7 @@
         </xacro:inertial_cylinder>
     </link>
     <gazebo reference="front_left_wheel">
-        <material>Gazebo/Red</material>
+        <material>Gazebo/CloudySky </material>
     </gazebo>
 
     <link name="front_right_wheel">
@@ -120,7 +120,7 @@
         </xacro:inertial_cylinder>
     </link>
     <gazebo reference="front_right_wheel">
-        <material>Gazebo/Red</material>
+        <material>Gazebo/CloudySky </material>
     </gazebo>
 
     <link name="back_left_wheel">
@@ -140,7 +140,7 @@
         </xacro:inertial_cylinder>
     </link>
     <gazebo reference="back_left_wheel">
-        <material>Gazebo/Red</material>
+        <material>Gazebo/CloudySky </material>
     </gazebo>
 
     <link name="back_right_wheel">
@@ -160,7 +160,7 @@
         </xacro:inertial_cylinder>
     </link>
     <gazebo reference="back_right_wheel">
-        <material>Gazebo/Red</material>
+        <material>Gazebo/CloudySky </material>
     </gazebo>
 
     <!-- Wheel Joint -->
