@@ -55,25 +55,16 @@ class keyboard_control(Node):
             "Use the following keys to control the robot: \n"
             "'W' : Increase move speed, \n"
             "'S' : Decrease move speed, \n"
-            "'A' : Slide left, \n"
-            "'D' : Slide right, \n"
-            "'Q' : Turn left, \n"
-            "'E' : Turn right, \n"
-            "'y' : Increase move speed increment. \n"
-            "'h' : Decrease move speed increment. \n"
-            "'u' : Increase slide speed increment. \n"
-            "'j' : Decrease slide speed increment. \n"
-            "'i' : Increase turn speed increment. \n"
-            "'k' : Decrease turn speed increment. \n"
+            "'A' : Turn left, \n"
+            "'D' : Turn right, \n"
             "' ' : Brake. \n"
-            "'8' : Slide Gripper Up. \n"
-            "'2' : Slide Gripper Down. \n"
-            "'4' : Close Gripper. \n"
-            "'6' : Open Gripper Up. \n"
-            "'5' : Set to defalt position. \n"
+            "'I' : Slide Gripper Up. \n"
+            "'M' : Slide Gripper Down. \n"
+            "'J' : Close Gripper. \n"
+            "'L' : Open Gripper Up. \n"
+            "'K' : Set to defalt position. \n"
             "Keyboard publisher started. Press keys to send messages. Press 'p' to quit.\n"
             f"Current Speeds: Move={self.moveSpeed:.2f}, Slide={self.slideSpeed:.2f}, Turn={self.turnSpeed:.2f}\n"
-            f"Current Speed increment: Move={self.plusMoveSpeed:.2f}, Slide={self.plusSlideSpeed:.2f}, Turn={self.plusturnSpeed:.2f}"
             f"\nCurrent Gripper Velocity: Slide={self.gripperSlideVel:.2f}, Up/Down={self.gripperUpDownVel:.2f}"
         )
 
@@ -83,26 +74,21 @@ class keyboard_control(Node):
     def update_speeds(self, key):
         # Adjust movement, sliding, and turning speeds
         self.moveSpeed = self.moveSpeed + self.plusMoveSpeed if key == 'w' else self.moveSpeed - self.plusMoveSpeed if key == 's' else self.moveSpeed
-        self.slideSpeed = self.slideSpeed + self.plusSlideSpeed if key == 'd' else self.slideSpeed - self.plusSlideSpeed if key == 'a' else self.slideSpeed
-        self.turnSpeed = self.turnSpeed + self.plusturnSpeed if key == 'q' else self.turnSpeed - self.plusturnSpeed if key == 'e' else self.turnSpeed
-
-        self.plusMoveSpeed = self.plusMoveSpeed + self.plusSpeedSize if key == 'W' else self.plusMoveSpeed - self.plusSpeedSize if key == 'S' else self.plusMoveSpeed
-        self.plusSlideSpeed = self.plusSlideSpeed + self.plusSpeedSize if key == 'A' else self.plusSlideSpeed - self.plusSpeedSize if key == 'D' else self.plusSlideSpeed
-        self.plusturnSpeed = self.plusturnSpeed + self.plusSpeedSize if key == 'Q' else self.plusturnSpeed - self.plusSpeedSize if key == 'E' else self.plusturnSpeed
+        self.turnSpeed = self.turnSpeed + self.plusturnSpeed if key == 'a' else self.turnSpeed - self.plusturnSpeed if key == 'd' else self.turnSpeed
 
         if key == ' ':
             self.moveSpeed = 0.0
             self.slideSpeed = 0.0
             self.turnSpeed = 0.0
 
-        if key == '4' or key == '6' or key == '8' or key == '2' or key == '5':
-            self.gripperSlideVel = self.gripperSlideVel + self.gripperIncrement if key == '4' else self.gripperSlideVel - self.gripperIncrement if key == '6' else self.gripperSlideVel
-            self.gripperUpDownVel = self.gripperUpDownVel + self.gripperIncrement if key == '8' else self.gripperUpDownVel - self.gripperIncrement if key == '2' else self.gripperUpDownVel
+        if key == 'j' or key == 'l' or key == 'i' or key == 'k' or key == 'm':
+            self.gripperSlideVel = self.gripperSlideVel + self.gripperIncrement if key == 'j' else self.gripperSlideVel - self.gripperIncrement if key == 'l' else self.gripperSlideVel
+            self.gripperUpDownVel = self.gripperUpDownVel + self.gripperIncrement if key == 'i' else self.gripperUpDownVel - self.gripperIncrement if key == 'm' else self.gripperUpDownVel
 
             self.gripperSlideVel = self.clip(self.gripperSlideVel, -self.maxGripperSlideVel, self.maxGripperSlideVel)
             self.gripperUpDownVel = self.clip(self.gripperUpDownVel, -self.maxGripperUpDownVel, self.maxGripperUpDownVel)
             
-            if key == '5':  # Reset Gripper to default position
+            if key == 'k':  # Reset Gripper to default position
                 self.gripperSlideVel = 0.0
                 self.gripperUpDownVel = 0.0
                 

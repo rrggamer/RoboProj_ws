@@ -161,10 +161,7 @@
             <solver_iterations>500</solver_iterations>  <!-- Increase solver iterations -->
             <solver_type>quick_nonlinear</solver_type>  <!-- Adjust solver for stability -->
         </ode>
-        <!-- <plugin name="gazebo_gripper" filename="libgazebo_ros_vacuum_gripper.so">
-            <always_on>true</always_on>
-            <topic>gripper/grasp</topic>
-        </plugin> -->
+
     </gazebo>
 
     <gazebo reference="gripper_finger_right">
@@ -174,10 +171,6 @@
             <solver_iterations>500</solver_iterations>  <!-- Increase solver iterations -->
             <solver_type>quick_nonlinear</solver_type>  <!-- Adjust solver for stability -->
         </ode>
-        <!-- <plugin name="gazebo_gripper" filename="libgazebo_ros_vacuum_gripper.so">
-            <always_on>true</always_on>
-            <topic>gripper/grasp</topic>
-        </plugin> -->
     </gazebo>
 
 </robot>
